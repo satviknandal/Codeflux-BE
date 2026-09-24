@@ -64,22 +64,8 @@ class ContactRequest(BaseModel):
 
 
 
-@router.post("/contact")
+@router.post("/api/contact")
 async def create_contact(request: ContactRequest):
-
-    # Create contact record
-    # contact = {
-    #     "id": str(uuid4()),
-    #     "partitionKey": "contact",
-    #     "name": request.name,
-    #     "email": request.email,
-    #     "company": request.company,
-    #     "phone": request.phone,
-    #     "services": request.services,
-    #     "message": request.message,
-    #     "createdAt": datetime.now(timezone.utc).isoformat(),
-    #     "status": "new",
-    # }
     contact = {
         "id": str(uuid4()),
         "partitionKey": "contact",
