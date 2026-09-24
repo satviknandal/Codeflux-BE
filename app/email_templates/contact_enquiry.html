@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subject }}</title>
+</head>
+
+<body style="margin: 0; padding: 0; background-color: #f4f7fb; font-family: Arial, Helvetica, sans-serif; color: #1f2937">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0"
+       style="background-color: #f4f7fb; padding: 40px 20px;">
+
+    <tr>
+        <td align="center">
+
+            <!-- Main Container -->
+            <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06)">
+
+                <!-- Header -->
+                <tr>
+                    <td style="padding: 28px 35px; background-color: #111827; text-align: left">
+                        <div style="font-size: 26px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px">
+                            Code<span style="color: #3ca1ff;">flux</span>
+                        </div>
+                        <div style="margin-top: 6px; font-size: 13px; color: #9ca3af">AI & Software Development</div>
+                    </td>
+                </tr>
+
+                <!-- Content -->
+                <tr>
+                    <td style="padding: 35px;">
+
+                        <h1 style="margin: 0 0 10px 0; font-size: 24px; color: #111827">{{ title }}</h1>
+                        <p style="margin: 0 0 25px 0; font-size: 15px; line-height: 1.6; color: #6b7280">{{ intro_message }}</p>
+
+                        <!-- Information Card -->
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px">
+
+                            <tr>
+                                <td style="padding: 20px;">
+
+                                    <div style="
+                                        font-size: 12px;
+                                        font-weight: 600;
+                                        color: #6b7280;
+                                        text-transform: uppercase;
+                                        margin-bottom: 6px;
+                                    ">
+                                        Name
+                                    </div>
+
+                                    <div style="
+                                        font-size: 15px;
+                                        color: #111827;
+                                        margin-bottom: 18px;
+                                    ">
+                                        {{ name }}
+                                    </div>
+
+
+                                    <div style="
+                                        font-size: 12px;
+                                        font-weight: 600;
+                                        color: #6b7280;
+                                        text-transform: uppercase;
+                                        margin-bottom: 6px;
+                                    ">
+                                        Email
+                                    </div>
+
+                                    <div style="
+                                        font-size: 15px;
+                                        color: #111827;
+                                        margin-bottom: 18px;
+                                    ">
+                                        {{ email }}
+                                    </div>
+
+
+                                    <div style="
+                                        font-size: 12px;
+                                        font-weight: 600;
+                                        color: #6b7280;
+                                        text-transform: uppercase;
+                                        margin-bottom: 6px;
+                                    ">
+                                        Company
+                                    </div>
+
+                                    <div style="
+                                        font-size: 15px;
+                                        color: #111827;
+                                        margin-bottom: 18px;
+                                    ">
+                                        {{ company }}
+                                    </div>
+
+
+                                    <div style="
+                                        font-size: 12px;
+                                        font-weight: 600;
+                                        color: #6b7280;
+                                        text-transform: uppercase;
+                                        margin-bottom: 6px;
+                                    ">
+                                        Phone
+                                    </div>
+
+                                    <div style="
+                                        font-size: 15px;
+                                        color: #111827;
+                                        margin-bottom: 18px;
+                                    ">
+                                        {{ phone }}
+                                    </div>
+
+
+                                    <div style="
+                                        font-size: 12px;
+                                        font-weight: 600;
+                                        color: #6b7280;
+                                        text-transform: uppercase;
+                                        margin-bottom: 6px;
+                                    ">
+                                        Services
+                                    </div>
+
+                                    <div style="
+                                        font-size: 15px;
+                                        color: #111827;
+                                        margin-bottom: 18px;
+                                    ">
+                                        {{ services }}
+                                    </div>
+
+
+                                    <div style="
+                                        font-size: 12px;
+                                        font-weight: 600;
+                                        color: #6b7280;
+                                        text-transform: uppercase;
+                                        margin-bottom: 6px;
+                                    ">
+                                        Message
+                                    </div>
+
+                                    <div style="
+                                        font-size: 15px;
+                                        line-height: 1.6;
+                                        color: #111827;
+                                    ">
+                                        {{ message }}
+                                    </div>
+
+                                </td>
+                            </tr>
+
+                        </table>
+
+                        <!-- CTA -->
+                        <table cellpadding="0" cellspacing="0" border="0"
+                               style="margin-top: 28px;">
+
+                            <tr>
+                                <td style="
+                                    border-radius: 6px;
+                                    background-color: #2563eb;
+                                ">
+
+                                    <a href="mailto:{{ email }}"
+                                       style="
+                                           display: inline-block;
+                                           padding: 12px 22px;
+                                           font-size: 14px;
+                                           font-weight: 600;
+                                           color: #ffffff;
+                                           text-decoration: none;
+                                       ">
+                                        Reply to Enquiry
+                                    </a>
+
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="
+                        padding: 25px 35px;
+                        background-color: #f8fafc;
+                        border-top: 1px solid #e5e7eb;
+                    ">
+
+                        <div style="
+                            font-size: 13px;
+                            color: #6b7280;
+                            line-height: 1.6;
+                        ">
+                            This enquiry was submitted through the
+                            <strong>Codeflux</strong> website.
+                        </div>
+
+                        <div style="
+                            margin-top: 10px;
+                            font-size: 12px;
+                            color: #9ca3af;
+                        ">
+                            © {{ year }} Codeflux. All rights reserved.
+                        </div>
+
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+
+</table>
+
+</body>
+</html>
