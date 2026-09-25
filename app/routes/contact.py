@@ -100,9 +100,11 @@ async def create_contact(request: ContactRequest):
         email_status = "sent"
 
     except Exception as error:
-        print(
-            f"Failed to send contact email: {error}"
-        )
+        import traceback
+
+        print(f"Failed to send contact email: {error}")
+        traceback.print_exc()
+
         email_status = "failed"
 
 
