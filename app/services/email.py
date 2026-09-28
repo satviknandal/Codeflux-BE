@@ -233,3 +233,80 @@ def send_contact_email(
     )
 
     return poller.result()
+
+
+def send_confirmation_email(
+    reference_number: str,
+    name: str,
+    email: str,
+    services: list[str],
+):
+    template_path = (
+        Path(__file__).resolve().parent.parent
+        / "email_templates"
+        / "contact_confirmation.html"
+    )
+
+    template = template_path.read_text(encoding="utf-8")
+
+    safe_name = escape(name)
+    safe_reference = escape(reference_number)
+
+    services_html = "<br>".join(
+        f"• {escape(service)}"
+        for service in services
+    )
+
+    html_content = (
+        template
+        .replace("{{ name }}", safe_name)
+        .replace("{{ reference_number }}", safe_reference)
+        .replace("{{ services }}", services_html)
+    )
+
+    plain_text_content = f"""
+Hi {name},
+
+Thank you for contacting Codeflux.
+
+We have successfully received your enquiry and our team will review it shortly.
+
+Reference Number:
+{reference_number}
+
+Services requested:
+{", ".join(services)}
+
+If you need to follow up regarding your enquiry, please quote the reference number above.
+
+Our team will get back to you as soon as possible.
+
+Kind regards,
+Codeflux Team
+AI & Software Development
+
+https://codeflux.com.au
+""".strip()
+
+    email_message = {
+        "senderAddress": os.environ["EMAIL_SENDER"],
+
+        "recipients": {
+            "to": [
+                {
+                    "address": email,
+                    "displayName": name,
+                }
+            ]
+        },
+
+        "content": {
+            "subject": f"Codeflux Enquiry Received – Ref: {reference_number}",
+            "plainText": plain_text_content,
+            "html": html_content,
+        },
+    }
+
+    poller = client.begin_send(email_message)
+
+    return poller.result()

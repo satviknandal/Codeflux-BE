@@ -3,7 +3,7 @@ from uuid import uuid4
 from fastapi import APIRouter
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from app.database.cosmos import save_contact
-from app.services.email import send_contact_email
+from app.services.email import send_confirmation_email, send_contact_email
 
 router = APIRouter()
 
@@ -61,13 +61,19 @@ class ContactRequest(BaseModel):
 
         return services
 
+def generate_reference_number() -> str:
+    date_part = datetime.now(timezone.utc).strftime("%Y%m%d")
+    unique_part = uuid4().hex[:8].upper()
 
+    return f"CF-{date_part}-{unique_part}"
 
 
 @router.post("/api/contact")
 async def create_contact(request: ContactRequest):
+    reference_number = generate_reference_number()
     contact = {
         "id": str(uuid4()),
+        "referenceNumber": reference_number,
         "partitionKey": "contact",
         "name": request.name,
         "email": str(request.email),
@@ -87,8 +93,8 @@ async def create_contact(request: ContactRequest):
     saved_contact = save_contact(contact)
 
     try:
-
         send_contact_email(
+            reference_number=reference_number,
             name=request.name,
             email=str(request.email),
             company=request.company,
@@ -108,6 +114,21 @@ async def create_contact(request: ContactRequest):
         email_status = "failed"
 
 
+    try:
+        send_confirmation_email(
+            reference_number=reference_number,
+            name=request.name,
+            email=str(request.email),
+            services=request.services,
+        )
+
+        confirmation_email_status = "sent"
+
+    except Exception as error:
+        print(f"Failed to send confirmation email: {error}")
+        confirmation_email_status = "failed"
+
+
     # -----------------------------------------------------
     # Return Response
     # -----------------------------------------------------
@@ -119,6 +140,8 @@ async def create_contact(request: ContactRequest):
         ),
         "data": {
             "id": saved_contact["id"],
+            "referenceNumber": reference_number,
             "emailStatus": email_status,
+            "confirmationEmailStatus": confirmation_email_status
         },
     }
