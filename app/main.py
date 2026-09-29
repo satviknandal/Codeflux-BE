@@ -4,13 +4,24 @@ load_dotenv()
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from azure.monitor.opentelemetry import configure_azure_monitor
+
 from app.routes.contact import router as contact_router
+
+
+# Configure Azure Application Insights / Azure Monitor
+try:
+    configure_azure_monitor()
+except Exception as exc:
+    print(f"Azure Monitor configuration failed: {exc}")
+
 
 app = FastAPI(
     title="Codeflux API",
     description="Backend API for Codeflux",
     version="1.0.0",
 )
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -37,5 +48,6 @@ async def health():
     return {
         "status": "healthy"
     }
+
 
 app.include_router(contact_router)
