@@ -30,4 +30,4 @@ typing-inspection==0.4.4
 typing-extensions>=4.14.1
 urllib3==2.8.0
 uvicorn==0.53.0
-azure-monitor-opentelemetry=1.8.10
+azure-monitor-opentelemetry==1.8.10
