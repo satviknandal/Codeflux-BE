@@ -166,6 +166,7 @@ AI & Software Development
 # ---------------------------------------------------------
 
 def send_contact_email(
+    reference_number: str,
     name: str,
     email: str,
     company: str,
@@ -175,6 +176,7 @@ def send_contact_email(
 ):
 
     html_content = render_contact_email(
+        reference_number=reference_number,
         name=name,
         email=email,
         company=company,
@@ -184,6 +186,7 @@ def send_contact_email(
     )
 
     plain_text_content = create_plain_text_email(
+        reference_number=reference_number,
         name=name,
         email=email,
         company=company,
@@ -206,9 +209,7 @@ def send_contact_email(
         },
 
         "content": {
-            "subject": (
-                f"New Contact Enquiry - {name}"
-            ),
+            "subject": ( f"New Contact Enquiry - " f"{name} - Ref: {reference_number}" ),
 
             "plainText": plain_text_content,
 
