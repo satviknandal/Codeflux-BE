@@ -33,6 +33,7 @@ TEMPLATE_PATH = (
 # ---------------------------------------------------------
 
 def render_contact_email(
+    reference_number: str,
     name: str,
     email: str,
     company: str,
@@ -45,11 +46,11 @@ def render_contact_email(
         encoding="utf-8"
     )
 
-    # Escape user-provided content before putting it
-    # into HTML.
+    # Escape user-provided content before
+    # inserting it into HTML.
 
+    safe_reference = escape(reference_number)
     safe_name = escape(name)
-
     safe_email = escape(email)
 
     safe_company = escape(
@@ -57,17 +58,12 @@ def render_contact_email(
     )
 
     safe_phone = escape(phone)
-
     safe_message = escape(message)
-
-    # Services
 
     services_html = "<br>".join(
         f"• {escape(service)}"
         for service in services
     )
-
-    # Replace template placeholders
 
     html_content = (
         template
@@ -78,6 +74,10 @@ def render_contact_email(
         .replace(
             "{{ intro_message }}",
             "A new enquiry has been submitted through the Codeflux website."
+        )
+        .replace(
+            "{{ reference_number }}",
+            safe_reference
         )
         .replace(
             "{{ name }}",
@@ -117,6 +117,7 @@ def render_contact_email(
 # ---------------------------------------------------------
 
 def create_plain_text_email(
+    reference_number: str,
     name: str,
     email: str,
     company: str,
@@ -133,6 +134,9 @@ def create_plain_text_email(
     return f"""
 New Contact Enquiry
 ===================
+
+Reference Number:
+{reference_number}
 
 A new enquiry has been submitted through the Codeflux website.
 
@@ -209,7 +213,10 @@ def send_contact_email(
         },
 
         "content": {
-            "subject": ( f"New Contact Enquiry - " f"{name} - Ref: {reference_number}" ),
+            "subject": (
+                f"New Contact Enquiry - "
+                f"{name} - Ref: {reference_number}"
+            ),
 
             "plainText": plain_text_content,
 
@@ -217,9 +224,8 @@ def send_contact_email(
         },
 
         # When support clicks Reply,
-        # the reply will go directly
-        # to the person who submitted
-        # the enquiry.
+        # the reply goes directly to the
+        # person who submitted the enquiry.
 
         "replyTo": [
             {
@@ -236,19 +242,26 @@ def send_contact_email(
     return poller.result()
 
 
+# ---------------------------------------------------------
+# Send Customer Confirmation Email
+# ---------------------------------------------------------
+
 def send_confirmation_email(
     reference_number: str,
     name: str,
     email: str,
     services: list[str],
 ):
+
     template_path = (
         Path(__file__).resolve().parent.parent
         / "email_templates"
         / "contact_confirmation.html"
     )
 
-    template = template_path.read_text(encoding="utf-8")
+    template = template_path.read_text(
+        encoding="utf-8"
+    )
 
     safe_name = escape(name)
     safe_reference = escape(reference_number)
@@ -260,9 +273,18 @@ def send_confirmation_email(
 
     html_content = (
         template
-        .replace("{{ name }}", safe_name)
-        .replace("{{ reference_number }}", safe_reference)
-        .replace("{{ services }}", services_html)
+        .replace(
+            "{{ name }}",
+            safe_name
+        )
+        .replace(
+            "{{ reference_number }}",
+            safe_reference
+        )
+        .replace(
+            "{{ services }}",
+            services_html
+        )
     )
 
     plain_text_content = f"""
@@ -302,12 +324,19 @@ https://codeflux.com.au
         },
 
         "content": {
-            "subject": f"Codeflux Enquiry Received – Ref: {reference_number}",
+            "subject": (
+                f"Codeflux Enquiry Received – "
+                f"Ref: {reference_number}"
+            ),
+
             "plainText": plain_text_content,
+
             "html": html_content,
         },
     }
 
-    poller = client.begin_send(email_message)
+    poller = client.begin_send(
+        email_message
+    )
 
     return poller.result()
