@@ -260,13 +260,16 @@ def create_plain_text_confirmation_email(
     )
 
     return f"""
-New Contact Enquiry
-===================
+Hi {name},
+
+Thank you for contacting Codeflux.
+
+We have successfully received your enquiry and our team will review it shortly.
+
+Details Submitted
 
 Reference Number:
 {reference_number}
-
-A new enquiry has been submitted through the Codeflux website.
 
 Name:
 {name}
@@ -325,27 +328,25 @@ def send_confirmation_email(
 
     safe_name = escape(name)
     safe_reference = escape(reference_number)
+    safe_email = escape(email)
+    safe_company = escape(company or "Not provided")
+    safe_phone = escape(phone)
+    safe_message = escape(message)
 
     services_html = "<br>".join(
         f"• {escape(service)}"
         for service in services
     )
 
-    html_content1 = (
+    html_content = (
         template
         .replace("{{ name }}", safe_name)
         .replace("{{ reference_number }}", safe_reference)
         .replace("{{ services }}", services_html)
-    )
-
-    html_content = render_contact_email(
-        reference_number=reference_number,
-        name=name,
-        email=email,
-        company=company,
-        phone=phone,
-        services=services,
-        message=message,
+        .replace("{{ email }}", safe_email)
+        .replace("{{ company }}", safe_company)
+        .replace("{{ phone }}", safe_phone)
+        .replace("{{ message }}", safe_message)
     )
 
     plain_text_content = create_plain_text_confirmation_email(
