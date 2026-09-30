@@ -348,6 +348,16 @@ def send_confirmation_email(
         message=message,
     )
 
+    plain_text_content = create_plain_text_confirmation_email(
+        reference_number=reference_number,
+        name=name,
+        email=email,
+        company=company,
+        phone=phone,
+        services=services,
+        message=message,
+    )
+
     plain_text_content1 = f"""
 Hi {name},
 
@@ -390,7 +400,7 @@ https://codeflux.com.au
                 f"Ref: {reference_number}"
             ),
 
-            "plainText": create_plain_text_confirmation_email,
+            "plainText": plain_text_content,
 
             "html": html_content,
         },
