@@ -347,6 +347,7 @@ def send_confirmation_email(
         .replace("{{ company }}", safe_company)
         .replace("{{ phone }}", safe_phone)
         .replace("{{ message }}", safe_message)
+        .replace("{{ year }}", str(datetime.now().year))
     )
 
     plain_text_content = create_plain_text_confirmation_email(
