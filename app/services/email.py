@@ -242,6 +242,63 @@ def send_contact_email(
     return poller.result()
 
 
+
+
+def create_plain_text_confirmation_email(
+    reference_number: str,
+    name: str,
+    email: str,
+    company: str,
+    phone: str,
+    services: list[str],
+    message: str,
+) -> str:
+
+    services_text = "\n".join(
+        f"- {service}"
+        for service in services
+    )
+
+    return f"""
+New Contact Enquiry
+===================
+
+Reference Number:
+{reference_number}
+
+A new enquiry has been submitted through the Codeflux website.
+
+Name:
+{name}
+
+Email:
+{email}
+
+Company:
+{company or "Not provided"}
+
+Phone:
+{phone}
+
+Services:
+{services_text}
+
+Message:
+{message}
+
+===================
+
+If you need to follow up regarding your enquiry, please quote the reference number above.
+
+Our team will get back to you as soon as possible.
+
+Kindly Regards,
+Codeflux Team
+
+https://codeflux.com.au
+""".strip()
+
+
 # ---------------------------------------------------------
 # Send Customer Confirmation Email
 # ---------------------------------------------------------
@@ -250,7 +307,10 @@ def send_confirmation_email(
     reference_number: str,
     name: str,
     email: str,
+    company: str,
+    phone: str,
     services: list[str],
+    message: str,
 ):
 
     template_path = (
@@ -271,23 +331,24 @@ def send_confirmation_email(
         for service in services
     )
 
-    html_content = (
+    html_content1 = (
         template
-        .replace(
-            "{{ name }}",
-            safe_name
-        )
-        .replace(
-            "{{ reference_number }}",
-            safe_reference
-        )
-        .replace(
-            "{{ services }}",
-            services_html
-        )
+        .replace("{{ name }}", safe_name)
+        .replace("{{ reference_number }}", safe_reference)
+        .replace("{{ services }}", services_html)
     )
 
-    plain_text_content = f"""
+    html_content = render_contact_email(
+        reference_number=reference_number,
+        name=name,
+        email=email,
+        company=company,
+        phone=phone,
+        services=services,
+        message=message,
+    )
+
+    plain_text_content1 = f"""
 Hi {name},
 
 Thank you for contacting Codeflux.
@@ -329,7 +390,7 @@ https://codeflux.com.au
                 f"Ref: {reference_number}"
             ),
 
-            "plainText": plain_text_content,
+            "plainText": create_plain_text_confirmation_email,
 
             "html": html_content,
         },

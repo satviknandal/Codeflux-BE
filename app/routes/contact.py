@@ -194,7 +194,10 @@ async def create_contact(request: ContactRequest):
             reference_number=reference_number,
             name=request.name,
             email=str(request.email),
+            company=request.company,
+            phone=request.phone,
             services=request.services,
+            message=request.message,
         )
 
         confirmation_email_status = "accepted"
